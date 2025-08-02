@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oferta Exclusiva para Músicos</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            color: white;
+        }
+        
+        /* Container do vídeo (tela cheia) */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+        }
+        
+        /* Estilo do vídeo (sem controles) */
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Overlay escuro para melhor legibilidade */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+        
+        /* Texto chamativo */
+        .hero-text {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 1;
+            width: 80%;
+        }
+        
+        .hero-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        
+        /* Barra de progresso do vídeo */
+        .progress-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 10;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #3A86FF;
+        }
+        
+        /* Botão "Compre Agora" (inicialmente escondido) */
+        .btn-comprar {
+            position: fixed;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #1E3A8A, #3A86FF);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 0.5s;
+            background-image: url('violao-bg.jpg');
+            background-size: cover;
+            background-blend-mode: overlay;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-comprar:hover {
+            background: linear-gradient(45deg, #3A86FF, #1E3A8A);
+        }
+    </style>
+</head>
+<body>
+    <!-- Vídeo em tela cheia -->
+    <div class="video-container">
+        <video id="meu-video" autoplay muted playsinline loop>
+            <source src="video.mp4" type="video/mp4">
+            Seu navegador não suporta vídeos.
+        </video>
+    </div>
+    
+    <!-- Overlay escuro -->
+    <div class="overlay"></div>
+    
+    <!-- Texto chamativo -->
+    <div class="hero-text">
+        <h1>DOMINE O VIOLÃO EM 30 DIAS</h1>
+        <p>Assista até o final para liberar uma oferta exclusiva!</p>
+    </div>
+    
+    <!-- Barra de progresso -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    
+    <!-- Botão de compra (aparece após 3m06s) -->
+    <button class="btn-comprar" id="btn-comprar">COMPRE AGORA - OFERTA LIMITADA!</button>
+    
+    <script>
+        // Configurações do vídeo
+        const video = document.getElementById('meu-video');
+        const progressBar = document.getElementById('progress-bar');
+        const btnComprar = document.getElementById('btn-comprar');
+        
+        // Forçar fullscreen (funciona apenas após interação do usuário)
+        function requestFullscreen() {
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.webkitRequestFullscreen) { // Safari
+                video.webkitRequestFullscreen();
+            }
+        }
+        
+        // Atualizar barra de progresso
+        video.addEventListener('timeupdate', function() {
+            const progress = (video.currentTime / video.duration) * 100;
+            progressBar.style.width = progress + '%';
+            
+            // Mostrar botão após 3 minutos e 6 segundos (186 segundos)
+            if (video.currentTime >= 186) {
+                btnComprar.style.opacity = '1';
+            }
+        });
+        
+        // Tentar autoplay em fullscreen (pode não funcionar em todos navegadores)
+        window.addEventListener('click', function() {
+            video.play();
+            requestFullscreen();
+        });
+    </script>
+</body>
+</html>
